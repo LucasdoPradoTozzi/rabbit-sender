@@ -1,0 +1,7 @@
+172.20.0.1 - - [08/Dec/2025:21:15:26 +0000] "GET / HTTP/1.1" 200 79012 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36" "-"
+172.20.0.1 - - [08/Dec/2025:21:15:26 +0000] "GET /favicon.svg HTTP/1.1" 200 3545 "http://localhost:8000/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36" "-"
+172.20.0.1 - - [08/Dec/2025:21:15:29 +0000] "GET /login HTTP/1.1" 200 19825 "http://localhost:8000/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36" "-"
+172.20.0.1 - - [08/Dec/2025:21:15:29 +0000] "GET /build/assets/app-9vte7xRl.css HTTP/1.1" 200 200549 "http://localhost:8000/login" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36" "-"
+172.20.0.1 - - [08/Dec/2025:21:15:29 +0000] "GET /build/assets/app-l0sNRNKZ.js HTTP/1.1" 200 1 "http://localhost:8000/login" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36" "-"
+172.20.0.1 - - [08/Dec/2025:21:15:29 +0000] "GET /livewire/livewire.js?id=646f9d24 HTTP/1.1" 200 355518 "http://localhost:8000/login" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36" "-"
+172.20.0.1 - - [08/Dec/2025:21:15:29 +0000] "GET /flux/flux.js?id=27031306 HTTP/1.1" 200 118172 "http://localhost:8000/login" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36" "-"
