@@ -22,33 +22,33 @@ services:
     volumes:
       - .:/var/www/html
       - ./docker/php/conf.d/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
-    depends_on:
-      - postgres
-      - redis
+    # depends_on:  # Not needed with SQLite and database drivers
+      # - postgres
+      # - redis
     restart: unless-stopped
     networks:
       - myapp
 
-  postgres:
-    image: postgres:16-alpine
-    container_name: testlaravelfromscratch_postgres
-    restart: unless-stopped
-    ports:
-      - "${DB_EXTERNAL_PORT}:${DB_PORT}"
-    environment:
-      POSTGRES_DB: ${DB_DATABASE}
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      PGDATA: /var/lib/postgresql/data/pgdata
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-root} -d ${DB_DATABASE:-testlaravelfromscratch}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - myapp
+  # postgres:
+  #   image: postgres:16-alpine
+  #   container_name: testlaravelfromscratch_postgres
+  #   restart: unless-stopped
+  #   ports:
+  #     - "${DB_EXTERNAL_PORT}:${DB_PORT}"
+  #   environment:
+  #     POSTGRES_DB: ${DB_DATABASE}
+  #     POSTGRES_USER: ${DB_USERNAME}
+  #     POSTGRES_PASSWORD: ${DB_PASSWORD}
+  #     PGDATA: /var/lib/postgresql/data/pgdata
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-root} -d ${DB_DATABASE:-testlaravelfromscratch}"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #   networks:
+  #     - myapp
 
   nginx:
     container_name: ${APP_NAME}-nginx
@@ -65,32 +65,32 @@ services:
     depends_on:
       - app
 
-  redis:
-    image: redis:6.0-alpine
-    container_name: ${APP_NAME}-redis
-    command: redis-server --requirepass ${REDIS_PASSWORD} --appendonly yes
-    volumes:
-      - myapp_redis:/data
-    ports:
-      - "${EXTERNAL_PORT_REDIS}:6379"
-    restart: unless-stopped
-    networks:
-      - myapp
+  # redis:
+  #   image: redis:6.0-alpine
+  #   container_name: ${APP_NAME}-redis
+  #   command: redis-server --requirepass ${REDIS_PASSWORD} --appendonly yes
+  #   volumes:
+  #     - myapp_redis:/data
+  #   ports:
+  #     - "${EXTERNAL_PORT_REDIS}:6379"
+  #   restart: unless-stopped
+  #   networks:
+  #     - myapp
 
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: ${APP_NAME}-rabbitmq
-    volumes:
-     - myapp_rabbitmq:/var/lib/rabbitmq
-    ports:
-      - "${EXTERNAL_PORT_RABBITMQ_ADMIN}:15672"
-      - "${EXTERNAL_PORT_RABBITMQ}:5672"
-    environment:
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
-    restart: unless-stopped
-    networks:
-      - myapp
+  # rabbitmq:
+  #   image: rabbitmq:3-management
+  #   container_name: ${APP_NAME}-rabbitmq
+  #   volumes:
+  #    - myapp_rabbitmq:/var/lib/rabbitmq
+  #   ports:
+  #     - "${EXTERNAL_PORT_RABBITMQ_ADMIN}:15672"
+  #     - "${EXTERNAL_PORT_RABBITMQ}:5672"
+  #   environment:
+  #     RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME}
+  #     RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+  #   restart: unless-stopped
+  #   networks:
+  #     - myapp
 
 networks:
   myapp:
@@ -98,7 +98,7 @@ networks:
 
 volumes:
   myapp_mysql:
-  myapp_redis:
-  myapp_rabbitmq:
-  postgres_data:
-    driver: local
+  # myapp_redis:
+  # myapp_rabbitmq:
+  # postgres_data:  # Not needed with SQLite
+  #   driver: local

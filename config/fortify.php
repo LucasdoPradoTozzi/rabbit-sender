@@ -144,7 +144,7 @@ return [
     */
 
     'features' => [
-        Features::registration(),
+        // Features::registration(), // Desabilitado - registro apenas via Google OAuth
         Features::resetPasswords(),
         Features::emailVerification(),
         Features::twoFactorAuthentication([

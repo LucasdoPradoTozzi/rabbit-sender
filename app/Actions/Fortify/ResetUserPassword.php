@@ -17,6 +17,8 @@ class ResetUserPassword implements ResetsUserPasswords
      */
     public function reset(User $user, array $input): void
     {
+        abort(403, 'Reset de senha desabilitado. Use login com Google.');
+
         Validator::make($input, [
             'password' => $this->passwordRules(),
         ])->validate();

@@ -34,6 +34,11 @@ class SocialiteController extends Controller
             return redirect()->route('login')->withErrors(['error' => 'Failed to authenticate with ' . ucfirst($provider)]);
         }
 
+        $allowedEmails = config('services.google.allowed_emails', []);
+        if (!in_array($socialiteUser->getEmail(), $allowedEmails)) {
+            return redirect()->route('login')->withErrors(['error' => 'Tá publico não amigão']);
+        }
+
         // Find or create user
         $user = User::firstOrCreate(
             [
