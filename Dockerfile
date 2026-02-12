@@ -58,6 +58,10 @@ COPY . .
 # Build frontend assets
 RUN npm run build
 
+# Create SQLite database file
+RUN touch /var/www/html/database/database.sqlite && \
+    chown www-data:www-data /var/www/html/database/database.sqlite
+
 # Generate optimized autoloader and cache config
 RUN composer dump-autoload --optimize --no-dev && \
     php artisan config:cache && \
@@ -65,14 +69,19 @@ RUN composer dump-autoload --optimize --no-dev && \
     php artisan view:cache
 
 # Set permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache && \
-    chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database && \
+    chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache && \
+    chmod 664 /var/www/html/database/database.sqlite
 
 # Copy nginx configuration
 COPY docker/nginx/nginx-prod.conf /etc/nginx/sites-available/default
 
 # Copy supervisor configuration
 COPY docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Copy entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Copy PHP production settings
 COPY docker/php/conf.d/opcache-prod.ini /usr/local/etc/php/conf.d/opcache.ini
@@ -81,5 +90,5 @@ COPY docker/php/conf.d/php-prod.ini /usr/local/etc/php/conf.d/php.ini
 # Expose port (Render will set PORT env variable)
 EXPOSE 80
 
-# Start supervisor to manage nginx and php-fpm
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+# Use entrypoint script to run migrations and start services
+ENTRYPOINT ["docker-entrypoint.sh"]
