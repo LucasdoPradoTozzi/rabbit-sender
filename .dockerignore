@@ -11,8 +11,8 @@ storage/framework/views/*
 bootstrap/cache/*
 tests
 .phpunit.result.cache
-docker
 docker-compose.yml
+docker/php/Dockerfile
 README.md
 .editorconfig
 .styleci.yml
