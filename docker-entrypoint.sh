@@ -9,8 +9,8 @@ rm -f /var/run/php-fpm.sock
 echo "Running database migrations..."
 php artisan migrate --force --no-interaction
 
-echo "=== Starting PHP-FPM in background ==="
-php-fpm &
+echo "=== Starting PHP-FPM in foreground mode ==="
+php-fpm -F &
 PHP_FPM_PID=$!
 
 echo "=== Waiting for PHP-FPM socket ==="
