@@ -66,6 +66,14 @@ curl -v http://localhost/test.php 2>&1 | head -30
 echo "--- Testing Laravel index ---"
 curl -v http://localhost/index.php 2>&1 | head -50
 
+echo "--- Checking Laravel error log ---"
+if [ -f /var/www/html/storage/logs/laravel.log ]; then
+    echo "Laravel log found, showing last 50 lines:"
+    tail -50 /var/www/html/storage/logs/laravel.log
+else
+    echo "No Laravel log file found yet"
+fi
+
 echo "--- Checking PHP-FPM error log ---"
 tail -20 /proc/$PHP_FPM_PID/fd/2 2>&1 || echo "Could not read PHP-FPM stderr"
 
