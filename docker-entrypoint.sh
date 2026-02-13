@@ -37,9 +37,28 @@ echo "=== Services started, monitoring processes ==="
 echo "PHP-FPM PID: $PHP_FPM_PID"
 echo "Nginx PID: $NGINX_PID"
 
-# Wait for either process to exit
-wait -n
+# Function to check if process is running
+check_process() {
+    if ! kill -0 $1 2>/dev/null; then
+        echo "Process $1 ($2) has died!"
+        return 1
+    fi
+    return 0
+}
 
-# If we get here, one process died, so kill the other and exit
-kill $PHP_FPM_PID $NGINX_PID 2>/dev/null
-exit 1
+# Monitor both processes
+while true; do
+    if ! check_process $PHP_FPM_PID "PHP-FPM"; then
+        echo "PHP-FPM died, checking logs..."
+        kill $NGINX_PID 2>/dev/null
+        exit 1
+    fi
+    
+    if ! check_process $NGINX_PID "Nginx"; then
+        echo "Nginx died, checking logs..."
+        kill $PHP_FPM_PID 2>/dev/null
+        exit 1
+    fi
+    
+    sleep 5
+done
