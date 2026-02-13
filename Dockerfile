@@ -17,8 +17,7 @@ RUN apt-get update && apt-get install -y \
     libjpeg62-turbo-dev \
     libgd-dev \
     jpegoptim optipng pngquant gifsicle \
-    nginx \
-    supervisor
+    nginx
 
 # Install Node.js and npm
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
@@ -75,9 +74,6 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 
 # Copy nginx configuration
 COPY docker/nginx/nginx-prod.conf /etc/nginx/sites-available/default
-
-# Copy supervisor configuration
-COPY docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Copy entrypoint script
 COPY docker-entrypoint.sh /usr/local/bin/
