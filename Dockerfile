@@ -86,6 +86,7 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 # Copy PHP production settings
 COPY docker/php/conf.d/opcache-prod.ini /usr/local/etc/php/conf.d/opcache.ini
 COPY docker/php/conf.d/php-prod.ini /usr/local/etc/php/conf.d/php.ini
+COPY docker/php/php-fpm-prod.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 
 # Expose port (Render will set PORT env variable)
 EXPOSE 80
