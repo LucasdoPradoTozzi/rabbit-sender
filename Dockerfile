@@ -55,8 +55,8 @@ RUN npm ci
 # Copy application code
 COPY . .
 
-# Build frontend assets
-RUN npm run build
+# Build frontend assets (clean first to ensure fresh build)
+RUN rm -rf public/build && npm run build
 
 # Create SQLite database file
 RUN touch /var/www/html/database/database.sqlite && \
