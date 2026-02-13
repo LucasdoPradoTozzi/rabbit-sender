@@ -55,15 +55,19 @@ RUN npm ci
 # Copy application code
 COPY . .
 
+# Generate optimized autoloader first
+RUN composer dump-autoload --optimize --no-dev
+
+# Publish Livewire/Flux assets to public directory
+RUN php artisan vendor:publish --tag=flux-assets --force --ansi && \
+    php artisan vendor:publish --tag=livewire:assets --force --ansi
+
 # Build frontend assets (clean first to ensure fresh build)
 RUN rm -rf public/build && npm run build
 
 # Create SQLite database file
 RUN touch /var/www/html/database/database.sqlite && \
     chown www-data:www-data /var/www/html/database/database.sqlite
-
-# Generate optimized autoloader (skip config cache for runtime)
-RUN composer dump-autoload --optimize --no-dev
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database && \
