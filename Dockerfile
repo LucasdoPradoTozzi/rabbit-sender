@@ -62,11 +62,8 @@ RUN npm run build
 RUN touch /var/www/html/database/database.sqlite && \
     chown www-data:www-data /var/www/html/database/database.sqlite
 
-# Generate optimized autoloader and cache config
-RUN composer dump-autoload --optimize --no-dev && \
-    php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan view:cache
+# Generate optimized autoloader (skip config cache for runtime)
+RUN composer dump-autoload --optimize --no-dev
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database && \

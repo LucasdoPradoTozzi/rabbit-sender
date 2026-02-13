@@ -9,6 +9,11 @@ rm -f /var/run/php-fpm.sock
 echo "Running database migrations..."
 php artisan migrate --force --no-interaction
 
+echo "=== Caching configs with runtime environment ==="
+php artisan config:cache
+php artisan route:cache  
+php artisan view:cache
+
 echo "=== Starting PHP-FPM in foreground mode ==="
 php-fpm -F &
 PHP_FPM_PID=$!
@@ -95,12 +100,12 @@ while true; do
         kill $NGINX_PID 2>/dev/null
         exit 1
     fi
-    
+
     if ! check_process $NGINX_PID "Nginx"; then
         echo "Nginx died, checking logs..."
         kill $PHP_FPM_PID 2>/dev/null
         exit 1
     fi
-    
+
     sleep 5
 done
