@@ -37,6 +37,40 @@ echo "=== Services started, monitoring processes ==="
 echo "PHP-FPM PID: $PHP_FPM_PID"
 echo "Nginx PID: $NGINX_PID"
 
+# Comprehensive diagnostics
+echo "=== Running diagnostics ==="
+echo "--- PHP Version ---"
+php -r "echo 'PHP: ' . PHP_VERSION . PHP_EOL;"
+
+echo "--- Laravel Environment ---"
+php artisan --version || echo "Laravel artisan failed!"
+php artisan env || echo "Env check failed"
+
+echo "--- Database Connection ---"
+php artisan db:show 2>&1 || echo "Database show failed"
+
+echo "--- File Permissions ---"
+ls -la /var/www/html/storage/
+ls -la /var/www/html/database/
+
+echo "--- Environment Variables ---"
+php -r "echo 'APP_ENV: ' . getenv('APP_ENV') . PHP_EOL;"
+php -r "echo 'APP_DEBUG: ' . getenv('APP_DEBUG') . PHP_EOL;"
+php -r "echo 'APP_KEY: ' . (getenv('APP_KEY') ? 'SET' : 'NOT SET') . PHP_EOL;"
+php -r "echo 'DB_CONNECTION: ' . getenv('DB_CONNECTION') . PHP_EOL;"
+
+echo "--- Testing PHP file directly ---"
+sleep 2
+curl -v http://localhost/test.php 2>&1 | head -30
+
+echo "--- Testing Laravel index ---"
+curl -v http://localhost/index.php 2>&1 | head -50
+
+echo "--- Checking PHP-FPM error log ---"
+tail -20 /proc/$PHP_FPM_PID/fd/2 2>&1 || echo "Could not read PHP-FPM stderr"
+
+echo "=== Diagnostics complete, entering monitor loop ==="
+
 # Function to check if process is running
 check_process() {
     if ! kill -0 $1 2>/dev/null; then
