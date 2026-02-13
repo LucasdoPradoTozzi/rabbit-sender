@@ -11,7 +11,8 @@ php artisan migrate --force --no-interaction
 
 echo "=== Caching configs with runtime environment ==="
 php artisan config:cache
-php artisan route:cache  
+# php artisan event:cache
+# php artisan route:cache  # Disabled - may break Flux dynamic routes
 php artisan view:cache
 
 echo "=== Starting PHP-FPM in foreground mode ==="
